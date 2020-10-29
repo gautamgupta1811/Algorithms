@@ -1,0 +1,34 @@
+//Simulation of DSBSC modulator along with product demodulator.
+
+Am=input('Message signal amplitude: ');
+fm=input('Message signal frequency: ');
+Ac=input('Carrier signal amplitude: ');
+fc=input('Carrier signal frequency: ');
+t=0:1/(50*fc):5/fm;
+//Message Signal
+m=Am*cos(2*pi*fm*t);
+//Carrier Signal
+c=Ac*cos(2*pi*fc*t);
+//Modulated Signal
+x=m.*c;
+//Coherent Demodulation
+lo=cos(2*pi*(fc)*t);
+r=x.*lo;
+[n,d]= butter(10,1/50);
+//Demodulated Output
+y=filter(n,d,r);
+subplot(3,1,1);
+plot(t,m,'k');
+xlabel('t(s)\rightarrow');
+ylabel('Amp(V)\rightarrow');
+title('Message Signal');
+subplot(3,1,2);
+plot(t,x,'k');
+xlabel('t(s)\rightarrow');
+ylabel('Amp(V)\rightarrow');
+title('Modulated Signal');
+subplot(3,1,3);
+plot(t,y,'k');
+xlabel('t(s)\rightarrow');
+ylabel('Amp(V)\rightarrow');
+title('Demodulated Signal');
