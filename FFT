@@ -1,0 +1,58 @@
+//Generation of different analog and digital signals.
+//Frequency domain representation of sine and square signals using FFT.
+
+f=125; 
+fs=1500; 
+t=0:1/fs:0.1; 
+v1=square(2*pi*f*t,35); 
+v2=square(2*pi*f*t,55); 
+v3=sin(2*pi*f*t); 
+subplot(3,1,1); 
+plot(t,v1); 
+axis([0 0.1 -3 3]); 
+xlabel('Time in Seconds');
+ylabel('Amplitude');
+title('Square wave duty cycle 35%, f=125Hz, fs=1500Hz');
+subplot(3,1,2); 
+plot(t,v2); 
+axis([0 0.1 -1.2 1.2]); 
+xlabel('Time in Seconds');
+ylabel('Amplitude');
+title('Square wave duty cycle 55%, f=125Hz, fs=1500Hz');
+subplot(3,1,3); 
+plot(t,v3); 
+axis([0 0.1 -1.2 1.2]); 
+xlabel('Time in Seconds');
+ylabel('Amplitude');
+title('Sine wave, f=125Hz, fs=1500Hz');
+
+f0=50; 
+d=50; 
+fs=1000;
+t=0:1/fs:0.3 ;
+v=sin(2*pi*f0*t);
+vf=fft(v,256);
+va=abs(vf);
+vp=angle(vf);
+f=0:fs/255:fs;
+subplot(2,2,1); 
+plot(t,v); 
+axis([0 0.3 -1.2 1.2]);
+xlabel('Time'); 
+ylabel('Amplitude'); 
+title('Original Signal');
+subplot(2,2,2); 
+stem(f,va);
+xlabel('Frequency'); 
+ylabel('Amplitude');
+title('Amplitude Spectra: Discrete');
+subplot(2,2,3); 
+plot(f,va);
+xlabel('Frequency'); 
+ylabel('Amplitude');
+title('Amplitude Spectra: Continuous');
+subplot(2,2,4); 
+plot(f,vp);
+xlabel('Frequency'); 
+ylabel('Phase in Radian');
+title('Phase Spectra: Continuous');
