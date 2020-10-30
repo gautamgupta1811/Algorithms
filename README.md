@@ -1,1 +1,1 @@
-Contains experiment 1-2-3-4 of IPU ADA Semester 5
+Contains experiments of ADA and CS (Semester 5: IPU).
