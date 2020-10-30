@@ -1,0 +1,184 @@
+//To study PDF and CDF of different discrete and continuous random variables and the effect of parametric changes.
+
+clc
+clear all
+//Bernoulli Random Variable
+fprintf('Bernoulli Random Variable\n');
+q=input('Success Probability: ');
+x_be=-3:1:4 ;
+f_be=zeros(size(x_be));
+f_be(x_be==1)=q;
+f_be(x_be==0)=1-q;
+F_be=zeros(size(f_be));
+for i=1:length(x_be)
+    for j=i:1
+        F_be(i)=F_be(i)+f_be(j);
+    end
+end
+m_be=sum(x_be.*f_be);
+var_be=sum(((x_be-m_be).^2).*f_be);
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_be,2),round(var_be,2));
+figure(1);
+subplot(3,2,1);
+stem(x_be,f_be,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title(['Bernoulli PDF; p=',num2str(q)]);
+hold on
+subplot(3,2,2);
+stairs(x_be,F_be,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title(['Bernoulli CDF; p=',num2str(q)]);
+ylim([-0.2 1.2]);
+hold on
+//Binomial Random Variable
+fprintf('Binomial Random Variable\n');
+n = input('Number of incidents: ');
+p = input('Success Probablity: ');
+x_bi=0:1:n;
+f_bi=zeros(size(x_bi));
+for k=0:n
+    nCk=factorial(n)/(factorial(k)*factorial(n-k));
+    f_bi(k+1)=nCk*p^k*(1-p)^(n-k);
+end
+F_bi=zeros(size(f_bi));
+for i=1:length(x_bi)
+    for j=1:i
+        F_bi(i)=F_bi(i)+f_bi(j);
+    end
+end
+m_bi=sum(x_bi.*f_bi);
+var_bi=sum(((x_bi-m_bi).^2).*f_bi);
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_bi,2),round(var_bi,2));
+figure(1);
+subplot(3,2,3);
+stem(x_bi,f_bi,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title(['Binomial PDF; n=',num2str(n),' p=',num2str(p)]);
+subplot(3,2,4);
+stairs(x_bi,F_bi,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title(['Binomial CDF; n=',num2str(n),' p=',num2str(p)]);
+ylim([-0.2 1.2]);
+//Poisson Random Variable
+fprintf('Poisson Random Variable\n');
+lam=input('Lambda parameter: ');
+x_p=0:1:20;
+f_p=zeros(size(x_p));
+for k=0:n
+    f_p(k+1)=((lam^k)/factorial(k))*exp(-lam);
+end
+F_p=zeros(size(f_p));
+for i=1:length(x_p)
+    for j=1:i
+        F_p(i)=F_p(i)+f_p(j);
+    end
+end
+m_p=sum(x_p.*f_p);
+var_p=sum((x_p-m_p).^2).*f_p;
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_p,2),round(var_p,2));
+figure(1);
+subplot(3,2,5);
+stem(x_bi,f_bi,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title(['Poisson PDF; lambda=',num2str(lam)]);
+subplot(3,2,6);
+stairs(x_p,F_p,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title(['Poisson CDF; p=',num2str(lam)]);
+ylim([-0.2 1.2]);
+
+//Uniform Random Variable
+fprintf('Uniform Random Variable\n');
+a=input('Starting point: ');
+b=input('Ending point: ');
+x_u=a-2:0.001:b+2;
+inc=x_u(2)-x_u(1);
+f_u=zeros(size(x_u));
+for i=1:length(x_u)
+    if x_u(i)>=a&&x_u(i)<=b
+        f_u(i)=1/(b-a);
+    end
+end
+F_u=zeros(size(f_u));
+for i=1:length(f_u)
+    for j=1:i
+        F_u(i)=F_u(i)+f_u(j)*inc;
+    end
+end
+m_u=sum(x_u.*f_u)*inc;
+var_u=sum(((x_u-m_u).^2).*f_u)*inc;
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_u,2),round(var_u,2));
+figure(2)
+subplot(3,2,1);
+plot(x_u,f_u,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title('Uniform PDF');
+hold on
+subplot(3,2,2);
+plot(x_u,F_u,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title('Uniform CDF');
+ylim([-0.2 1.2]);
+hold on
+//Gaussian Random Variable
+fprintf('Gaussian Random Variable\n');
+u=input('Mean of X: ');
+var=input('Variance of X: ');
+x_g=-10:0.001:10;
+inc=x_g(2)-x_g(1);
+f_g=(1/sqrt(2*pi*var))*exp(-((x_g-u).^2)/(2*var));
+F_g=zeros(size(f_g));
+for i=1:length(f_g)
+    for j=1:i
+        F_g(i)=F_g(i)+f_g(j)*inc;
+    end
+end
+m_g=sum(x_g.*f_g)*inc;
+var_g=sum(((x_g-m_g).^2).*f_g)*inc;
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_g,2),round(var_g,2));
+figure(3)
+subplot(3,2,3);
+plot(x_g,f_g,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title('Gaussian PDF');
+subplot(3,2,4);
+plot(x_g,F_g,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title('Gaussian CDF');
+ylim([-0.2 1.2]);
+//Rayleigh Distribution
+fprintf('Rayleigh Random Variable\n')
+sig=input('Parameter Sigma: ');
+x_r=0:0.001:10;
+inc=x_r(2)-x_r(1);
+f_r=(x_r/sig^2).*exp(-(x_r.^2)/(2*sig^2));
+F_r=zeros(size(f_r));
+for i=1:length(f_r)
+    for j=1:i
+        F_r(i)=F_r(i)+f_r(j)*inc;
+    end
+end
+m_r=sum(x_r.*f_r)*inc;
+var_r=sum(((x_r-m_r).^2).*f_r)*inc;
+fprintf('Mean=%3f and Variance=%3f\n\n',round(m_r,2),round(var_r,2));
+subplot(3,2,5);
+plot(x_r,f_r,'black');
+xlabel('X\rightarrow');
+ylabel('f_X(x)\rightarrow');
+title('Rayleigh PDF');
+subplot(3,2,6);
+plot(x_r,F_r,'black');
+xlabel('X\rightarrow');
+ylabel('F_X(x)\rightarrow');
+title('Rayleigh CDF');
+ylim([-0.2 1.2]);
