@@ -1,0 +1,39 @@
+//Simulation of DSBAM modulator along with envelope detection demodulator.
+
+A=input('Enter the carrier signal peak: ');
+B=input('Enter the baseband signal peak: ');
+f1=input('Enter the baseband signal frequency: ');
+f2=input('Enter the carrier signal frequency: ');
+fs=input('Enter the sampling frequency: ');
+t=0:0.001:1;
+M=cos(2*pi*f1*t);
+N=cos(2*pi*f2*t);
+m=B/A;
+O=A*(1+m*M).*N;
+//Demodulation
+O1=O;
+for i=1:length(t)
+    if O1(i)<=0
+        O1(i)=0;
+    end
+end
+[den,num]=butter(2,2*pi*f1/fs);
+M1=filter(den,num,O1);
+M11=filter(den,num,M1);
+M12=filter(den,num,M11);
+M13=filter(den,num,M12);
+subplot(5,1,1);
+plot(t,M);
+title('Baseband Signal');
+subplot(5,1,2);
+plot(t,N);
+title('Carrier Signal');
+subplot(5,1,3);
+plot(t,O);
+title('Modulated Carrier');
+subplot(5,1,4);
+plot(t,O1);
+title('Rectified Modulated Signal');
+subplot(5,1,5);
+plot(t,M13);
+title('Demodulated Signal')
